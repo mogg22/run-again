@@ -1,0 +1,24 @@
+.run-canvas {
+  position: fixed;
+  inset: 0;
+  background: #0a0a0a;
+  overflow: hidden;
+  cursor: crosshair;
+  transition: background 0.5s;
+}
+
+.run-canvas.climax {
+  background: #0f0800;
+}
+
+.text-block {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'Courier New', monospace;
+  color: #ffffff;
+  white-space: nowrap;
+  pointer-events: none;
+  will-change: transform;
+  letter-spacing: 0.05em;
+}
