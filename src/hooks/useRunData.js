@@ -1,13 +1,15 @@
 import { useState, useCallback } from "react";
 import { sampleRun } from "../data/sampleRun";
 import { mapPointToVisuals } from "../utils/dataMapper";
+import { parseGPX } from "../utils/parseGPX";
+import { parseHealthXML } from "../utils/parseHealthXML";
 
 export function useRunData() {
   const [runData, setRunData] = useState(null);
   const [visualPoints, setVisualPoints] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(null);
 
-  // 데이터 → 시각 파라미터 배열로 변환
   const processData = useCallback((data) => {
     const mapped = data.points.map((point, i) =>
       mapPointToVisuals(point, data.points[i - 1] ?? null)
@@ -15,27 +17,33 @@ export function useRunData() {
     setRunData(data);
     setVisualPoints(mapped);
     setIsLoaded(true);
+    setError(null);
   }, []);
 
-  // 샘플 데이터 로드
   const loadSample = useCallback(() => {
     processData(sampleRun);
   }, [processData]);
 
-  // GPX/JSON 파일 업로드 (Sprint 2에서 파서 연결 예정)
   const loadFile = useCallback((file) => {
     const reader = new FileReader();
     reader.onload = (e) => {
+      const text = e.target.result;
       try {
-        // 현재는 JSON만 지원, GPX는 Sprint 2에서 추가
-        const parsed = JSON.parse(e.target.result);
-        processData(parsed);
-      } catch {
-        console.warn("JSON 파싱 실패 — GPX 파서는 Sprint 2에서 연결됩니다");
+        if (file.name.endsWith(".gpx")) {
+          processData(parseGPX(text));
+        } else if (file.name.endsWith(".xml")) {
+          processData(parseHealthXML(text));
+        } else {
+          // JSON fallback
+          processData(JSON.parse(text));
+        }
+      } catch (err) {
+        setError(`파일 파싱 실패: ${err.message}`);
+        console.error(err);
       }
     };
     reader.readAsText(file);
   }, [processData]);
 
-  return { runData, visualPoints, isLoaded, loadSample, loadFile };
+  return { runData, visualPoints, isLoaded, error, loadSample, loadFile };
 }

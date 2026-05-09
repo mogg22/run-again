@@ -1,6 +1,6 @@
 import "./Controls.css";
 
-export function Controls({ isPlaying, progress, onPlay, onPause, onReset, currentVisual }) {
+export function Controls({ isPlaying, progress, onPlay, onPause, onReset, currentVisual, renderMode, onToggleMode }) {
   return (
     <div className="controls">
       <div className="progress-bar">
@@ -20,6 +20,14 @@ export function Controls({ isPlaying, progress, onPlay, onPause, onReset, curren
             <span>{currentVisual.raw.distance.toFixed(1)}<small>km</small></span>
           </div>
         )}
+
+        <button
+          onClick={onToggleMode}
+          title="DOM ↔ Pretext 전환"
+          style={{ fontSize: "10px", letterSpacing: "0.05em", width: "auto", padding: "0 10px" }}
+        >
+          {renderMode.toUpperCase()}
+        </button>
       </div>
     </div>
   );

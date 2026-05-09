@@ -1,0 +1,48 @@
+.perf-hud {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #aaa;
+  z-index: 200;
+  min-width: 110px;
+}
+
+.hud-label {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.hud-fps {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.hud-fps span {
+  font-size: 11px;
+  font-weight: 400;
+  color: #666;
+}
+
+.hud-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 2px 0;
+  border-top: 1px solid #1a1a1a;
+}
+
+.hud-row strong {
+  color: #fff;
+  font-weight: 500;
+}
