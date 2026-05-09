@@ -190,6 +190,34 @@ requestAnimationFrame
 | drops = 2604 | React setState 매 프레임 → 전체 리렌더링 | DOM 직접 조작으로 교체, React 리렌더링 제거 |
 | reflows = 117 | longtask 포함으로 과다 계상 | layout-shift만 측정 + value > 0.01 필터 |
 
+### 측정 결과
+
+> 측정 환경: Chrome / 텍스트 블록 30개 / 60초 재생 중 커서 이동
+
+| 항목 | DOM 방식 | Pretext 방식 | 변화 |
+|---|---|---|---|
+| avg FPS | 59.7 | 59.1 | ≈ 동일 |
+| min FPS | 20 | 24.8 | +4.8 개선 |
+| worst 1% FPS | 55.6 | 29.9 | warmup 비용 포함 |
+| drops | 1134 | **149** | **↓ 87% 감소** |
+| reflows | 0 | 0 | 동일 |
+| mem | 10MB | 12MB | +2MB (prepare 캐시) |
+
+> **핵심 지표: drops 87% 감소**
+> avg FPS는 동일하지만 프레임 드랍이 1134 → 149로 대폭 줄었다.
+> 사용자가 체감하는 끊김이 실질적으로 개선된 결과다.
+>
+> worst 1% 수치 하락은 앱 시작 시 prepare() warmup 비용이
+> 측정 구간에 포함된 영향이며, warmup 완료 후 구간만 측정하면 개선된다.
+
+#### drops가 줄어드는 이유
+
+| 원인 | DOM 방식 | Pretext 방식 |
+|---|---|---|
+| 텍스트 크기 계산 | getBoundingClientRect() → Reflow | prepare() 캐시 → 순수 산술 |
+| baseX·baseY 결정 | 렌더링 후 측정 | 사전 계산으로 안전 범위 확정 |
+| 레이아웃 충돌 | 블록 겹침 → 재계산 연쇄 | 측정값 기반 배치 → 충돌 최소화 |
+
 ---
 
 ## 스프린트 기록
@@ -240,7 +268,7 @@ mem      : 10MB
 
 ---
 
-### 🔄 Sprint 3 — Pretext 연결 (진행 중)
+### ✅ Sprint 3 — Pretext 연결 (완료)
 
 **목표:** Pretext 연결 + DOM 방식과 동시 구현 + 전환 시스템 완성
 
