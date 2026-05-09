@@ -141,9 +141,10 @@
     "@babel/helper-string-parser" "^7.27.1"
     "@babel/helper-validator-identifier" "^7.28.5"
 
-"@chenglou/pretext@https://github.com/chenglou/pretext":
+"@chenglou/pretext@^0.0.6":
   version "0.0.6"
-  resolved "https://github.com/chenglou/pretext#f06fef02141e2c685d45a275ee3a134c9917521f"
+  resolved "https://registry.yarnpkg.com/@chenglou/pretext/-/pretext-0.0.6.tgz#1f4a37d3c8cb24c0e6a2e6b863601ee1337063e5"
+  integrity sha512-U10s4tFeyu3oVHfXuNWwZSKqHXefhaigpcBkGj60qQFRJ+yUoQ+ez3cGJelP7BWDAB58HCgjcTSmOcg+77afBQ==
 
 "@emnapi/core@1.10.0":
   version "1.10.0"

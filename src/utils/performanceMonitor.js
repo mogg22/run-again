@@ -100,3 +100,10 @@ export class PerformanceMonitor {
 }
 
 export const monitor = new PerformanceMonitor("DOM");
+
+// 모드 전환 시 label 갱신
+export function setMonitorMode(mode) {
+  monitor.label = mode === 'pretext' ? 'Pretext' : 'DOM';
+  monitor.stop();
+  monitor.start();
+}
